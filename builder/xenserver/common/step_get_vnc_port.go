@@ -1,4 +1,4 @@
-package common
+	package common
 
 import (
 	"fmt"
@@ -11,6 +11,13 @@ type StepGetVNCPort struct{}
 
 func (self *StepGetVNCPort) Run(state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packer.Ui)
+	config := state.Get("commonconfig").(CommonConfig)
+
+  if len(config.BootCommand) == 0 {
+  	// mock this because we're not gonna use it anyways
+  	state.Put("instance_vnc_port", uint(65532))
+		return multistep.ActionContinue
+  }
 
 	ui.Say("Step: forward the instances VNC port over SSH")
 
